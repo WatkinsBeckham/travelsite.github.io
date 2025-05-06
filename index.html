@@ -43,9 +43,10 @@
 </head>
 <body>
     <header>
-        <h1>Travel Explorer 🌍</h1>
+        <h1>Where's Beckham? 🌍</h1>
         <select id="locationFilter">
             <option value="">All Locations</option>
+            <option>Future Trips</option>
             <option>Europe</option>
             <option>Asia</option>
             <option>Americas</option>
@@ -59,52 +60,19 @@
                 <div class="reviews"></div>
                 <button onclick="showReviewForm('paris')">Add Review</button>
             </div>
+            <div class="destination-card" data-location="Asia">
+                <h2>Tokyo, Japan</h2>
+                <div class="reviews"></div>
+                <button onclick="showReviewForm('paris')">Add Review</button>
+            </div>
+            <div class="destination-card" data-location="Europe">
+                <h2>Amsterdam, Netherlands</h2>
+                <div class="reviews"></div>
+                <button onclick="showReviewForm('paris')">Add Review</button>
+            </div>
             <!-- Add more destination cards -->
         </div>
     </main>
-
-    <!-- Review Form (hidden by default) -->
-    <div id="reviewModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <form id="reviewForm">
-                <textarea id="reviewText" required></textarea>
-                <button type="submit">Submit Review</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        // Location Filtering
-        document.getElementById('locationFilter').addEventListener('change', (e) => {
-            const selectedLocation = e.target.value;
-            document.querySelectorAll('.destination-card').forEach(card => {
-                card.style.display = selectedLocation === '' || 
-                    card.dataset.location === selectedLocation ? 'block' : 'none';
-            });
-        });
-
-        // Review System
-        let currentDestination = '';
-        
-        function showReviewForm(destination) {
-            currentDestination = destination;
-            document.getElementById('reviewModal').style.display = 'block';
-        }
-
-        document.getElementById('reviewForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const reviewText = document.getElementById('reviewText').value;
-            // Save to localStorage
-            const reviews = JSON.parse(localStorage.getItem(currentDestination) || '[]');
-            reviews.push(reviewText);
-            localStorage.setItem(currentDestination, JSON.stringify(reviews));
-            
-            // Update UI
-            document.querySelector(`[data-location="${currentDestination}"] .reviews`)
-                .innerHTML += `<p>${reviewText}</p>`;
-            
-            document.getElementById('reviewModal').style.display = 'none';
         });
     </script>
 </body>
