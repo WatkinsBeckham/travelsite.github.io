@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Logs</title>
+    <style>
+        /* Basic styling */
+        :root { --primary: #2c3e50; --secondary: #3498db; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        
+        /* Search filters */
+        #searchFilters { 
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f5f6fa;
+            border-radius: 8px;
+        }
+        
+        /* Travel entries grid */
+        .travel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .travel-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .travel-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Travel Logs</h1>
+    
+    <!-- Search Section -->
+    <search id="searchFilters">
+        <select id="countryFilter">
+            <option value="">All Countries</option>
+        </select>
+        <select id="stateFilter">
+            <option value="">All States</option>
+        </select>
+    </search>
+
+    <!-- Travel Entries -->
+    <div class="travel-grid" id="travelEntries"></div>
+
+    <script>
+        // Sample travel data (store in separate JSON file on GitHub)
+        let travelData = [
+            {
+                title: "Grand Canyon",
+                country: "USA",
+                state: "Arizona",
+                image: "grand-canyon.jpg",
+                description: "Breathtaking views of the canyon",
+                tags: ["hiking", "nature"]
+            }
+        ];
+
+        // Initialize filters
+        function initFilters() {
+            const countries = [...new Set(travelData.map(entry => entry.country))];
+            const states = [...new Set(travelData.map(entry => entry.state))];
+            
+            countries.forEach(country => {
+                const option = new Option(country, country);
+                countryFilter.add(option);
+            });
+            
+            states.forEach(state => {
+                const option = new Option(state, state);
+                stateFilter.add(option);
+            });
+        }
+
+        // Filter functionality
+        function filterEntries() {
+            const selectedCountry = countryFilter.value;
+            const selectedState = stateFilter.value;
+            
+            travelEntries.innerHTML = travelData
+                .filter(entry => {
+                    return (!selectedCountry || entry.country === selectedCountry) &&
+                           (!selectedState || entry.state === selectedState);
+                })
+                .map(entry => `
+                    <article class="travel-card">
+                        <img src="${entry.image}" alt="${entry.title}">
+                        <h3>${entry.title}</h3>
+                        <p>${entry.description}</p>
+                        <div class="tags">
+                            ${entry.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </article>
+                `).join('');
+        }
+
+        // Event listeners
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', filterEntries);
+        });
+
+        // Initialize
+        initFilters();
+        filterEntries();
+    </script>
+</body>
+</html>
