@@ -1,207 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Travel Log</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f8f9fa;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #0077b6;
-      color: white;
-      padding: 2rem 1rem;
-      text-align: center;
-    }
-    .container {
-      max-width: 900px;
-      margin: 2rem auto;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      padding: 2rem;
-    }
-    h2 {
-      color: #023e8a;
-    }
-    form {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem 2rem;
-      margin-bottom: 2rem;
-    }
-    form label {
-      font-weight: bold;
-      margin-bottom: 0.3rem;
-      display: block;
-    }
-    form input, form textarea, form select {
-      width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #adb5bd;
-      border-radius: 4px;
-      font-size: 1rem;
-    }
-    form textarea {
-      resize: vertical;
-      min-height: 60px;
-    }
-    .form-actions {
-      grid-column: 1 / -1;
-      text-align: right;
-    }
-    .form-actions button {
-      background: #0077b6;
-      color: white;
-      border: none;
-      padding: 0.7rem 1.5rem;
-      border-radius: 4px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .form-actions button:hover {
-      background: #023e8a;
-    }
-    .search-bar {
-      margin-bottom: 2rem;
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-    .search-bar input, .search-bar select {
-      padding: 0.5rem;
-      border: 1px solid #adb5bd;
-      border-radius: 4px;
-      font-size: 1rem;
-    }
-    .travel-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.5rem;
-    }
-    .travel-card {
-      background: #e9ecef;
-      border-radius: 6px;
-      padding: 1rem 1.2rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      position: relative;
-    }
-    .travel-card h3 {
-      margin-top: 0;
-      margin-bottom: 0.3rem;
-      color: #0077b6;
-    }
-    .travel-card .tags {
-      margin-top: 0.3rem;
-      margin-bottom: 0.7rem;
-    }
-    .travel-card .tag {
-      display: inline-block;
-      background: #48cae4;
-      color: #023e8a;
-      padding: 0.2rem 0.7rem;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      margin-right: 0.3rem;
-      margin-bottom: 0.2rem;
-    }
-    .travel-card .rating {
-      margin: 0.5rem 0;
-    }
-    .star {
-      font-size: 1.2rem;
-      color: #ffd700;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    .star.inactive {
-      color: #adb5bd;
-    }
-    .travel-card .description {
-      margin: 0.5rem 0 0 0;
-      color: #343a40;
-    }
-    @media (max-width: 600px) {
-      .container {
-        padding: 1rem;
-      }
-      form {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Explorer</title>
+    <style>
+        /* Basic CSS Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styles */
+        header {
+            background: #2c3e50;
+            padding: 1rem;
+            color: white;
+        }
+
+        /* Filter Section */
+        .filters {
+            padding: 1rem;
+            background: #ecf0f1;
+        }
+
+        /* Destination Cards */
+        .destination-card {
+            border: 1px solid #ddd;
+            margin: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        /* Review Form */
+        .review-form {
+            margin: 2rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>My Travel Log</h1>
-    <p>Discover all the places I've traveled. Search by country, state, or tag. Add your own adventures!</p>
-  </header>
-  <div class="container">
-    <h2>Add a New Location</h2>
-    <form id="travel-form" autocomplete="off">
-      <div>
-        <label for="location-name">Location Name</label>
-        <input type="text" id="location-name" required>
-      </div>
-      <div>
-        <label for="country">Country</label>
-        <input type="text" id="country" required>
-      </div>
-      <div>
-        <label for="state">State/Province</label>
-        <input type="text" id="state">
-      </div>
-      <div>
-        <label for="tags">Tags (comma separated)</label>
-        <input type="text" id="tags" placeholder="e.g., city, beach, hiking">
-      </div>
-      <div style="grid-column: 1 / -1;">
-        <label for="description">Description</label>
-        <textarea id="description" required></textarea>
-      </div>
-      <div style="grid-column: 1 / -1;">
-        <label>Rating</label>
-        <div id="star-rating" class="rating">
-          <i class="star far fa-star" data-value="1"></i>
-          <i class="star far fa-star" data-value="2"></i>
-          <i class="star far fa-star" data-value="3"></i>
-          <i class="star far fa-star" data-value="4"></i>
-          <i class="star far fa-star" data-value="5"></i>
+    <header>
+        <h1>Travel Explorer 🌍</h1>
+        <select id="locationFilter">
+            <option value="">All Locations</option>
+            <option>Europe</option>
+            <option>Asia</option>
+            <option>Americas</option>
+        </select>
+    </header>
+
+    <main>
+        <div class="destinations">
+            <div class="destination-card" data-location="Europe">
+                <h2>Paris, France</h2>
+                <div class="reviews"></div>
+                <button onclick="showReviewForm('paris')">Add Review</button>
+            </div>
+            <!-- Add more destination cards -->
         </div>
-      </div>
-      <div class="form-actions">
-        <button type="submit">Add Location</button>
-      </div>
-    </form>
+    </main>
 
-    <div class="search-bar">
-      <input type="text" id="search-input" placeholder="Search by name, country, state, or tag">
-      <select id="country-filter">
-        <option value="">All Countries</option>
-      </select>
-      <select id="state-filter">
-        <option value="">All States/Provinces</option>
-      </select>
+    <!-- Review Form (hidden by default) -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="reviewForm">
+                <textarea id="reviewText" required></textarea>
+                <button type="submit">Submit Review</button>
+            </form>
+        </div>
     </div>
-    <div class="travel-list" id="travel-list"></div>
-  </div>
-  <script>
-    // JavaScript code will be explained and provided in the next section
-  </script>
-</body>
-</html>
 
-        filterEntries();
+    <script>
+        // Location Filtering
+        document.getElementById('locationFilter').addEventListener('change', (e) => {
+            const selectedLocation = e.target.value;
+            document.querySelectorAll('.destination-card').forEach(card => {
+                card.style.display = selectedLocation === '' || 
+                    card.dataset.location === selectedLocation ? 'block' : 'none';
+            });
+        });
+
+        // Review System
+        let currentDestination = '';
+        
+        function showReviewForm(destination) {
+            currentDestination = destination;
+            document.getElementById('reviewModal').style.display = 'block';
+        }
+
+        document.getElementById('reviewForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const reviewText = document.getElementById('reviewText').value;
+            // Save to localStorage
+            const reviews = JSON.parse(localStorage.getItem(currentDestination) || '[]');
+            reviews.push(reviewText);
+            localStorage.setItem(currentDestination, JSON.stringify(reviews));
+            
+            // Update UI
+            document.querySelector(`[data-location="${currentDestination}"] .reviews`)
+                .innerHTML += `<p>${reviewText}</p>`;
+            
+            document.getElementById('reviewModal').style.display = 'none';
+        });
     </script>
 </body>
 </html>
